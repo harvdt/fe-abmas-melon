@@ -7,14 +7,13 @@ function App() {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetch("/sensor-data/");
+				const response = await fetch(
+					"http://localhost:1337/api/data-sensors?sort[0]=createdAt:desc&pagination[limit]=1"
+				);
 				const data = await response.json();
 
 				if (data && data.data.length > 0) {
-					const latestData = data.data.sort(
-						(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-					)[0];
-					setSensorData(latestData);
+					setSensorData(data.data[0]);
 				}
 			} catch (error) {
 				console.error("Error fetching sensor data:", error);
@@ -30,7 +29,7 @@ function App() {
 		React.useEffect(() => {
 			const updateSize = () => {
 				if (window.innerWidth <= 640) {
-					setSize({ width: 150, height: 150 }); // Mobile
+					setSize({ width: 150, height: 150 });
 				} else {
 					setSize({ width: 200, height: 200 });
 				}
@@ -79,7 +78,7 @@ function App() {
 					</p>
 
 					<p className="text-white text-lg font-semibold mb-4 sm:mb-10">
-						Datas from: {formatedDateTime}
+						Data terakhir: {formatedDateTime}
 					</p>
 				</div>
 
@@ -91,7 +90,7 @@ function App() {
 								<Gauge
 									width={gaugeSize.width}
 									height={gaugeSize.height}
-									value={sensorData.temperature}
+									value={sensorData.suhu_tanah}
 									valueMax={100}
 									cornerRadius="50%"
 									sx={{
@@ -118,7 +117,7 @@ function App() {
 								<Gauge
 									width={gaugeSize.width}
 									height={gaugeSize.height}
-									value={sensorData.ph}
+									value={sensorData.ph_tanah}
 									valueMax={14}
 									cornerRadius="50%"
 									sx={{
@@ -145,7 +144,7 @@ function App() {
 								<Gauge
 									width={gaugeSize.width}
 									height={gaugeSize.height}
-									value={sensorData.moisture}
+									value={sensorData.kelembapan_tanah}
 									valueMax={100}
 									cornerRadius="50%"
 									sx={{
@@ -172,7 +171,7 @@ function App() {
 								<Gauge
 									width={gaugeSize.width}
 									height={gaugeSize.height}
-									value={sensorData.conductivity}
+									value={sensorData.konduktivitas}
 									valueMax={100}
 									cornerRadius="50%"
 									sx={{
@@ -232,7 +231,7 @@ function App() {
 							<Gauge
 								width={gaugeSize.width}
 								height={gaugeSize.height}
-								value={sensorData.phospor}
+								value={sensorData.phosphor}
 								valueMax={100}
 								cornerRadius="50%"
 								sx={{
