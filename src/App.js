@@ -45,14 +45,6 @@ function App() {
 
 	const gaugeSize = useGaugeSize();
 
-	if (!sensorData) {
-		return (
-			<div className="bg-[#232937] min-h-screen px-4 sm:px-10 py-4 sm:py-8 flex justify-center items-center text-3xl sm:text-5xl text-white font-bold">
-				Loading...
-			</div>
-		);
-	}
-
 	const formatDateTime = (isoString) => {
 		const date = new Date(isoString);
 
