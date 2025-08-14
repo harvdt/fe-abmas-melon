@@ -46,6 +46,7 @@ function App() {
 	const gaugeSize = useGaugeSize();
 
 	const formatDateTime = (isoString) => {
+		if (!isoString) return "Loading...";
 		const date = new Date(isoString);
 
 		const readableFormat = date.toLocaleString("id-ID", {
@@ -59,7 +60,23 @@ function App() {
 		return readableFormat;
 	};
 
-	const formatedDateTime = formatDateTime(sensorData.createdAt);
+	const displayData = sensorData || {
+		suhu_tanah: 0,
+		temperature: 0,
+		ph_tanah: 0,
+		ph: 0,
+		kelembapan_tanah: 0,
+		moisture: 0,
+		konduktivitas: 0,
+		conductivity: 0,
+		nitrogen: 0,
+		phosphor: 0,
+		phospor: 0,
+		kalium: 0,
+		createdAt: null,
+	};
+
+	const formatedDateTime = formatDateTime(displayData.createdAt);
 
 	return (
 		<main className="bg-[#232937] min-h-screen px-4 sm:px-10 py-4 sm:py-8 flex justify-center items-center">
@@ -75,117 +92,113 @@ function App() {
 				</div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-10">
-					{sensorData && (
-						<>
-							{/* Temperature Gauge */}
-							<div className="flex flex-col items-center">
-								<Gauge
-									width={gaugeSize.width}
-									height={gaugeSize.height}
-									value={sensorData.suhu_tanah}
-									valueMax={100}
-									cornerRadius="50%"
-									sx={{
-										"& text": { fill: "white" },
-										[`& .${gaugeClasses.valueText}`]: {
-											fontSize: window.innerWidth <= 640 ? 30 : 40,
-											fontWeight: 700,
-										},
-										[`& .${gaugeClasses.valueArc}`]: {
-											fill: "#ff5733",
-										},
-									}}
-								/>
-								<p className="text-white font-medium text-xl sm:text-2xl text-center">
-									{sensorData.temperature} &deg;C
-								</p>
-								<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
-									Temperature
-								</p>
-							</div>
+					{/* Temperature Gauge */}
+					<div className="flex flex-col items-center">
+						<Gauge
+							width={gaugeSize.width}
+							height={gaugeSize.height}
+							value={displayData.suhu_tanah}
+							valueMax={100}
+							cornerRadius="50%"
+							sx={{
+								"& text": { fill: "white" },
+								[`& .${gaugeClasses.valueText}`]: {
+									fontSize: window.innerWidth <= 640 ? 30 : 40,
+									fontWeight: 700,
+								},
+								[`& .${gaugeClasses.valueArc}`]: {
+									fill: "#ff5733",
+								},
+							}}
+						/>
+						<p className="text-white font-medium text-xl sm:text-2xl text-center">
+							{displayData.temperature} &deg;C
+						</p>
+						<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
+							Temperature
+						</p>
+					</div>
 
-							{/* pH Gauge */}
-							<div className="flex flex-col items-center">
-								<Gauge
-									width={gaugeSize.width}
-									height={gaugeSize.height}
-									value={sensorData.ph_tanah}
-									valueMax={14}
-									cornerRadius="50%"
-									sx={{
-										"& text": { fill: "white" },
-										[`& .${gaugeClasses.valueText}`]: {
-											fontSize: window.innerWidth <= 640 ? 30 : 40,
-											fontWeight: 700,
-										},
-										[`& .${gaugeClasses.valueArc}`]: {
-											fill: "#33aaff",
-										},
-									}}
-								/>
-								<p className="text-white font-medium text-xl sm:text-2xl text-center">
-									{sensorData.ph}
-								</p>
-								<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
-									pH
-								</p>
-							</div>
+					{/* pH Gauge */}
+					<div className="flex flex-col items-center">
+						<Gauge
+							width={gaugeSize.width}
+							height={gaugeSize.height}
+							value={displayData.ph_tanah}
+							valueMax={14}
+							cornerRadius="50%"
+							sx={{
+								"& text": { fill: "white" },
+								[`& .${gaugeClasses.valueText}`]: {
+									fontSize: window.innerWidth <= 640 ? 30 : 40,
+									fontWeight: 700,
+								},
+								[`& .${gaugeClasses.valueArc}`]: {
+									fill: "#33aaff",
+								},
+							}}
+						/>
+						<p className="text-white font-medium text-xl sm:text-2xl text-center">
+							{displayData.ph}
+						</p>
+						<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
+							pH
+						</p>
+					</div>
 
-							{/* Moisture Gauge */}
-							<div className="flex flex-col items-center">
-								<Gauge
-									width={gaugeSize.width}
-									height={gaugeSize.height}
-									value={sensorData.kelembapan_tanah}
-									valueMax={100}
-									cornerRadius="50%"
-									sx={{
-										"& text": { fill: "white" },
-										[`& .${gaugeClasses.valueText}`]: {
-											fontSize: window.innerWidth <= 640 ? 30 : 40,
-											fontWeight: 700,
-										},
-										[`& .${gaugeClasses.valueArc}`]: {
-											fill: "#a832a6",
-										},
-									}}
-								/>
-								<p className="text-white font-medium text-xl sm:text-2xl text-center">
-									{sensorData.moisture}
-								</p>
-								<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
-									Moisture
-								</p>
-							</div>
+					{/* Moisture Gauge */}
+					<div className="flex flex-col items-center">
+						<Gauge
+							width={gaugeSize.width}
+							height={gaugeSize.height}
+							value={displayData.kelembapan_tanah}
+							valueMax={100}
+							cornerRadius="50%"
+							sx={{
+								"& text": { fill: "white" },
+								[`& .${gaugeClasses.valueText}`]: {
+									fontSize: window.innerWidth <= 640 ? 30 : 40,
+									fontWeight: 700,
+								},
+								[`& .${gaugeClasses.valueArc}`]: {
+									fill: "#a832a6",
+								},
+							}}
+						/>
+						<p className="text-white font-medium text-xl sm:text-2xl text-center">
+							{displayData.moisture}
+						</p>
+						<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
+							Moisture
+						</p>
+					</div>
 
-							{/* Conductivity Gauge */}
-							<div className="flex flex-col items-center">
-								<Gauge
-									width={gaugeSize.width}
-									height={gaugeSize.height}
-									value={sensorData.konduktivitas}
-									valueMax={100}
-									cornerRadius="50%"
-									sx={{
-										"& text": { fill: "white" },
-										[`& .${gaugeClasses.valueText}`]: {
-											fontSize: window.innerWidth <= 640 ? 30 : 40,
-											fontWeight: 700,
-										},
-										[`& .${gaugeClasses.valueArc}`]: {
-											fill: "#52b202",
-										},
-									}}
-								/>
-								<p className="text-white font-medium text-xl sm:text-2xl text-center">
-									{sensorData.conductivity} µS/cm
-								</p>
-								<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
-									Conductivity
-								</p>
-							</div>
-						</>
-					)}
+					{/* Conductivity Gauge */}
+					<div className="flex flex-col items-center">
+						<Gauge
+							width={gaugeSize.width}
+							height={gaugeSize.height}
+							value={displayData.konduktivitas}
+							valueMax={100}
+							cornerRadius="50%"
+							sx={{
+								"& text": { fill: "white" },
+								[`& .${gaugeClasses.valueText}`]: {
+									fontSize: window.innerWidth <= 640 ? 30 : 40,
+									fontWeight: 700,
+								},
+								[`& .${gaugeClasses.valueArc}`]: {
+									fill: "#52b202",
+								},
+							}}
+						/>
+						<p className="text-white font-medium text-xl sm:text-2xl text-center">
+							{displayData.conductivity} µS/cm
+						</p>
+						<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
+							Conductivity
+						</p>
+					</div>
 				</div>
 
 				{/* Additional Sensor Gauges */}
@@ -196,7 +209,7 @@ function App() {
 							<Gauge
 								width={gaugeSize.width}
 								height={gaugeSize.height}
-								value={sensorData.nitrogen}
+								value={displayData.nitrogen}
 								valueMax={100}
 								cornerRadius="50%"
 								sx={{
@@ -211,7 +224,7 @@ function App() {
 								}}
 							/>
 							<p className="text-white font-medium text-xl sm:text-2xl text-center">
-								{sensorData.nitrogen} mg/l
+								{displayData.nitrogen} mg/l
 							</p>
 							<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
 								Nitrogen
@@ -223,7 +236,7 @@ function App() {
 							<Gauge
 								width={gaugeSize.width}
 								height={gaugeSize.height}
-								value={sensorData.phosphor}
+								value={displayData.phosphor}
 								valueMax={100}
 								cornerRadius="50%"
 								sx={{
@@ -238,7 +251,7 @@ function App() {
 								}}
 							/>
 							<p className="text-white font-medium text-xl sm:text-2xl text-center">
-								{sensorData.phospor} mg/l
+								{displayData.phospor} mg/l
 							</p>
 							<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
 								Phosphor
@@ -250,7 +263,7 @@ function App() {
 							<Gauge
 								width={gaugeSize.width}
 								height={gaugeSize.height}
-								value={sensorData.kalium}
+								value={displayData.kalium}
 								valueMax={100}
 								cornerRadius="50%"
 								sx={{
@@ -265,7 +278,7 @@ function App() {
 								}}
 							/>
 							<p className="text-white font-medium text-xl sm:text-2xl text-center">
-								{sensorData.kalium} mg/l
+								{displayData.kalium} mg/l
 							</p>
 							<p className="text-slate-300 text-base sm:text-lg font-medium text-center">
 								Kalium
