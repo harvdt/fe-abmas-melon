@@ -13,7 +13,6 @@ function App() {
 				const result = await response.json();
 
 				if (result && result.data.length > 0) {
-					// Pastikan semua nilai di-convert ke number
 					const raw = result.data[0];
 					setSensorData({
 						temperature: Number(raw.temperature) || 0,
@@ -21,7 +20,7 @@ function App() {
 						moisture: Number(raw.moisture) || 0,
 						conductivity: Number(raw.conductivity) || 0,
 						nitrogen: Number(raw.nitrogen) || 0,
-						phosphor: Number(raw.phosphor) || 0, // perbaikan typo
+						phosphor: Number(raw.phosphor) || 0,
 						kalium: Number(raw.kalium) || 0,
 						createdAt: raw.createdAt || null,
 					});
@@ -31,7 +30,10 @@ function App() {
 			}
 		};
 
-		fetchData();
+		fetchData(); 
+		const intervalId = setInterval(fetchData, 2000);
+
+		return () => clearInterval(intervalId);
 	}, []);
 
 	const useGaugeSize = () => {
